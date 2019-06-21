@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
 
   solidus_version = [">= 1.0", "< 3"]
 
+  s.add_runtime_dependency 'deface', '~> 1.0'
+
   s.add_dependency "solidus_api", solidus_version
   s.add_dependency "solidus_backend", solidus_version
   s.add_dependency "solidus_core", solidus_version
