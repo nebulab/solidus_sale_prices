@@ -24,13 +24,9 @@ Install the Gem:
 
     bundle install
 
-Copy the migrations in your app:
+Copy assets files and run migrations
 
-    bundle exec rake railties:install:migrations
-
-Run database migrations in your app:
-
-    bundle exec rake db:migrate
+bundle exec rails generate solidus_sale_prices:install
 
 Usage
 -----
