@@ -21,7 +21,6 @@ require 'rspec/rails'
 require 'database_cleaner'
 require 'ffaker'
 require 'timecop'
-require 'capybara/poltergeist'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -90,9 +89,15 @@ RSpec.configure do |config|
   config.fail_fast = ENV['FAIL_FAST'] || false
   config.order = "random"
 
-  Capybara.javascript_driver = :poltergeist
-  Capybara.default_max_wait_time = 5
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, timeout: 1.minute, phantomjs_options: ['--load-images=no'])
+  require 'selenium/webdriver'
+
+  Capybara.register_driver :selenium_chrome_headless do |app|
+    browser_options = ::Selenium::WebDriver::Chrome::Options.new
+    browser_options.args << '--headless'
+    browser_options.args << '--disable-gpu'
+    browser_options.args << '--window-size=1440,1080'
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
   end
+  Capybara.javascript_driver = (ENV['CAPYBARA_DRIVER'] || :selenium_chrome_headless).to_sym
+  Capybara.default_max_wait_time = 5
 end

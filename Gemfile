@@ -6,6 +6,9 @@ gem "solidus", github: "solidusio/solidus", branch: branch
 gem 'pg', '~> 0.21'
 gem 'mysql2'
 
+gem 'selenium-webdriver'
+gem 'webdrivers'
+
 # In order to allow testing on older version of Solidus that still
 # use the gem factory_girl we need to bundle an older version of
 # factory_bot:

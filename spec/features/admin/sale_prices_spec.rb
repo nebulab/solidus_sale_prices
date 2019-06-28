@@ -94,29 +94,84 @@ RSpec.feature 'Admin sale prices' do
         expect(page).to have_selector('[data-hook="products_row"]', count: 4)
       end
 
-      scenario 'only certain variants are added if selected' do
-        visit spree.admin_product_sale_prices_path(product_id: product.slug)
+      if Spree.solidus_gem_version >= Gem::Version.new('2.5.0')
+        scenario 'only certain variants are added if selected' do
+          visit spree.admin_product_sale_prices_path(product_id: product.slug)
 
-        fill_in('Sale Price', with: 32.33)
-        fill_in('Sale Start Date', with: '2016/12/11 16:12')
-        fill_in('Sale End Date', with: '2016/12/17 05:35 pm')
-        select(product.master.sku_and_options_text, from: 'Variants', visible: false)
-        select(small.sku_and_options_text, from: 'Variants', visible: false)
-        select(medium.sku_and_options_text, from: 'Variants', visible: false)
-        click_button('Add Sale Price')
-        expect(page).to have_selector('[data-hook="products_row"]', count: 3)
+          find('#sale_price_start_at').click
+          find(".flatpickr-day[aria-label='#{2.day.ago.strftime('%B %e, %Y')}']").click
+
+          find('#sale_price_end_at').click
+          find(".flatpickr-day[aria-label='#{2.day.from_now.strftime('%B %e, %Y')}']").click
+
+          fill_in('Sale Price', with: 32.33)
+
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: product.master.sku_and_options_text).click
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: small.sku_and_options_text).click
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: medium.sku_and_options_text).click
+
+          click_button('Add Sale Price')
+          expect(page).to have_selector('[data-hook="products_row"]', count: 3)
+        end
+      else
+        scenario 'only certain variants are added if selected' do
+          visit spree.admin_product_sale_prices_path(product_id: product.slug)
+
+          fill_in('Sale Price', with: 32.33)
+          fill_in('Sale Start Date', with: '2016/12/11 16:12')
+          fill_in('Sale End Date', with: '2016/12/17 05:35 pm')
+
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: product.master.sku_and_options_text).click
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: small.sku_and_options_text).click
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: medium.sku_and_options_text).click
+
+          click_button('Add Sale Price')
+          expect(page).to have_selector('[data-hook="products_row"]', count: 3)
+        end
       end
 
-      scenario 'only non-master variants are added if selected' do
-        visit spree.admin_product_sale_prices_path(product_id: product.slug)
+      if Spree.solidus_gem_version >= Gem::Version.new('2.5.0')
+        scenario 'only non-master variants are added if selected' do
+          visit spree.admin_product_sale_prices_path(product_id: product.slug)
 
-        fill_in('Sale Price', with: 32.33)
-        fill_in('Sale Start Date', with: '2016/12/11 16:12')
-        fill_in('Sale End Date', with: '2016/12/17 05:35 pm')
-        select(small.sku_and_options_text, from: 'Variants', visible: false)
-        select(medium.sku_and_options_text, from: 'Variants', visible: false)
-        click_button('Add Sale Price')
-        expect(page).to have_selector('[data-hook="products_row"]', count: 2)
+          find('#sale_price_start_at').click
+          find(".flatpickr-day[aria-label='#{2.day.ago.strftime('%B %e, %Y')}']").click
+
+          find('#sale_price_end_at').click
+          find(".flatpickr-day[aria-label='#{2.day.from_now.strftime('%B %e, %Y')}']").click
+
+          fill_in('Sale Price', with: 32.33)
+
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: small.sku_and_options_text).click
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: medium.sku_and_options_text).click
+
+          click_button('Add Sale Price')
+          expect(page).to have_selector('[data-hook="products_row"]', count: 2)
+        end
+      else
+        scenario 'only non-master variants are added if selected' do
+          visit spree.admin_product_sale_prices_path(product_id: product.slug)
+
+          fill_in('Sale Price', with: 32.33)
+          fill_in('Sale Start Date', with: '2016/12/11 16:12')
+          fill_in('Sale End Date', with: '2016/12/17 05:35 pm')
+
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: small.sku_and_options_text).click
+          find('.select2-choices').click
+          find('.select2-result-label', exact_text: medium.sku_and_options_text).click
+
+          click_button('Add Sale Price')
+          expect(page).to have_selector('[data-hook="products_row"]', count: 2)
+        end
       end
     end
   end
@@ -129,28 +184,65 @@ RSpec.feature 'Admin sale prices' do
       medium
     end
 
-    scenario 'updates the sale price inplace' do
-      visit spree.admin_product_sale_prices_path(product_id: product.slug)
+    if Spree.solidus_gem_version >= Gem::Version.new('2.5.0')
+      def match_date(date)
+        Regexp.new(Regexp.escape(I18n.l(date, format: :datetimepicker)), 'i')
+      end
 
-      find('[data-action="edit"]').click
-      expect(page).to have_selector('[data-hook="products_row"]', count: 1)
+      scenario 'updates the sale price inplace' do
+        visit spree.admin_product_sale_prices_path(product_id: product.slug)
 
-      expect(find_field('Sale Price', with: '54.95')).to be_visible
-      expect(find_field('Sale Start Date', with: I18n.l(1.day.ago, format: :datetimepicker))).to be_visible
-      expect(find_field('Sale End Date', with: I18n.l(1.day.from_now, format: :datetimepicker))).to be_visible
+        find('[data-action="edit"]').click
+        expect(page).to have_selector('[data-hook="products_row"]', count: 1)
 
-      fill_in('Sale Price', with: 32.33)
-      fill_in('Sale Start Date', with: I18n.l(2.days.ago, format: :datetimepicker))
-      fill_in('Sale End Date', with: I18n.l(2.days.from_now, format: :datetimepicker))
-      click_button('Update Sale Price')
+        expect(find_field('Sale Price', with: '54.95')).to be_visible
 
-      expect(page).to have_selector('[data-hook="products_row"]', count: 1)
-      within('[data-hook="products_row"]') do
-        expect(page).to have_content(small.sku)
-        expect(page).to have_content('32.33')
+        expect(find_field('Sale Start Date', with: match_date(1.day.ago))).to be_visible
+        expect(find_field('Sale End Date', with: match_date(1.day.from_now))).to be_visible
 
-        within('.start-date') { expect(page).to have_content(pretty_time(2.days.ago)) }
-        within('.end-date') { expect(page).to have_content(pretty_time(2.days.from_now)) }
+        find('#sale_price_end_at').click
+        find(".flatpickr-day[aria-label='#{2.day.from_now.strftime('%B %e, %Y')}']").click
+
+        find('#sale_price_start_at').click
+        find(".flatpickr-day[aria-label='#{2.day.ago.strftime('%B %e, %Y')}']").click
+
+        fill_in('Sale Price', with: 32.33)
+
+        click_button('Update Sale Price')
+
+        expect(page).to have_selector('[data-hook="products_row"]', count: 1)
+        within('[data-hook="products_row"]') do
+          expect(page).to have_content(small.sku)
+          expect(page).to have_content('32.33')
+
+          within('.start-date') { expect(page).to have_content(pretty_time(2.days.ago)) }
+          within('.end-date') { expect(page).to have_content(pretty_time(2.days.from_now)) }
+        end
+      end
+    else
+      scenario 'updates the sale price inplace' do
+        visit spree.admin_product_sale_prices_path(product_id: product.slug)
+
+        find('[data-action="edit"]').click
+        expect(page).to have_selector('[data-hook="products_row"]', count: 1)
+
+        expect(find_field('Sale Price', with: '54.95')).to be_visible
+        expect(find_field('Sale Start Date', with: I18n.l(1.day.ago, format: :datetimepicker))).to be_visible
+        expect(find_field('Sale End Date', with: I18n.l(1.day.from_now, format: :datetimepicker))).to be_visible
+
+        fill_in('Sale Price', with: 32.33)
+        fill_in('Sale Start Date', with: I18n.l(2.days.ago, format: :datetimepicker))
+        fill_in('Sale End Date', with: I18n.l(2.days.from_now, format: :datetimepicker))
+        click_button('Update Sale Price')
+
+        expect(page).to have_selector('[data-hook="products_row"]', count: 1)
+        within('[data-hook="products_row"]') do
+          expect(page).to have_content(small.sku)
+          expect(page).to have_content('32.33')
+
+          within('.start-date') { expect(page).to have_content(pretty_time(2.days.ago)) }
+          within('.end-date') { expect(page).to have_content(pretty_time(2.days.from_now)) }
+        end
       end
     end
   end
