@@ -20,6 +20,17 @@ Spree::BaseHelper.class_eval do
     try(:supported_currencies) || [ _current_currency ]
   end
 
+  def gte_solidus_2_4?
+    gte_solidus?('2.4.0')
+  end
+
+  def gte_solidus_2_5?
+    gte_solidus?('2.5.0')
+  end
+
+  def gte_solidus?(version)
+    SolidusSupport.solidus_gem_version >= Gem::Version.new(version)
+  end
 
   private
 

@@ -7,26 +7,25 @@
     <% end %>
   </legend>
 
-  <% solidus_2_4 = Spree.solidus_gem_version >= Gem::Version.new('2.4.0') %>
-     <%= form_for [:admin, product, sale_price], remote: true do |f| %>
-    <div class="row <%= solidus_2_4 ? 'mb-3' : '' %>">
-      <div class="<%= solidus_2_4 ? 'col-2' : 'columns four' %>">
+  <%= form_for [:admin, product, sale_price], remote: true do |f| %>
+    <div class="row <%= gte_solidus_2_4? ? 'mb-3' : '' %>">
+      <div class="<%= gte_solidus_2_4? ? 'col-2' : 'columns four' %>">
         <%= f.label :original_price, Spree.t('original_price') %><br />
         <%= f.text_field :original_price, value: product.original_price, disabled: true %>
       </div>
-      <div class="<%= solidus_2_4 ? 'col-2' : 'columns four' %>">
+      <div class="<%= gte_solidus_2_4? ? 'col-2' : 'columns four' %>">
         <%= f.label :value, Spree.t('sale_price_amount') %><br />
         <%= f.text_field :value, required: true, type: :number, step: '0.01' %>
       </div>
-      <div class="<%= solidus_2_4 ? 'col-2' : 'columns four' %>">
+      <div class="<%= gte_solidus_2_4? ? 'col-2' : 'columns four' %>">
         <%= f.label :currency, Spree.t('sale_price_currency') %><br />
         <%= f.select :currency, options_for_select(supported_currencies_for_sale_price) %>
       </div>
     </div>
 
     <% if product.has_variants? %>
-      <div class="row <%= solidus_2_4 ? 'mb-3' : '' %>">
-        <div class="<%= solidus_2_4 ? 'col-10' : 'columns ten' %>">
+      <div class="row <%= gte_solidus_2_4? ? 'mb-3' : '' %>">
+        <div class="<%= gte_solidus_2_4? ? 'col-10' : 'columns ten' %>">
           <%= label_tag 'variant_ids[]', Spree.t('variants') %><br />
           <%= select_tag 'variant_ids[]',
                          options_from_collection_for_select(
@@ -36,21 +35,21 @@
       </div>
     <% end %>
 
-    <div class="row <%= solidus_2_4 ? 'mb-3' : '' %>">
-      <div class="<%= solidus_2_4 ? 'col-2' : 'columns four' %>">
+    <div class="row <%= gte_solidus_2_4? ? 'mb-3' : '' %>">
+      <div class="<%= gte_solidus_2_4? ? 'col-2' : 'columns four' %>">
         <%= f.label :start_at, Spree.t('sale_price_start_at') %><br />
         <%= f.text_field :start_at, class: "datetimepicker",
                                     value: sale_price.start_at.present? ? l(sale_price.start_at, format: :datetimepicker) : "" %>
       </div>
-      <div class="<%= solidus_2_4 ? 'col-2' : 'columns four' %>">
+      <div class="<%= gte_solidus_2_4? ? 'col-2' : 'columns four' %>">
         <%= f.label :end_at, Spree.t('sale_price_end_at') %><br />
         <%= f.text_field :end_at, class: "datetimepicker",
                                   value: sale_price.end_at.present? ? l(sale_price.end_at, format: :datetimepicker) : "" %>
       </div>
     </div>
 
-    <div class="row <%= solidus_2_4 ? 'mb-3' : '' %>">
-      <div class="<%= solidus_2_4 ? 'col-3' : 'columns three' %>">
+    <div class="row <%= gte_solidus_2_4? ? 'mb-3' : '' %>">
+      <div class="<%= gte_solidus_2_4? ? 'col-3' : 'columns three' %>">
         <% if sale_price.new_record? %>
           <%= f.submit Spree.t('add_sale_button') %>
         <% else %>
