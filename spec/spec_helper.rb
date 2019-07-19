@@ -32,6 +32,7 @@ require 'spree/testing_support/capybara_ext'
 require 'spree/testing_support/controller_requests'
 require 'spree/testing_support/factories'
 require 'spree/testing_support/url_helpers'
+require 'solidus_support/extension/feature_helper'
 
 # Requires factories defined in lib/spree_sale_prices/factories.rb
 require 'solidus_sale_prices/factories'
@@ -88,16 +89,4 @@ RSpec.configure do |config|
 
   config.fail_fast = ENV['FAIL_FAST'] || false
   config.order = "random"
-
-  require 'selenium/webdriver'
-
-  Capybara.register_driver :selenium_chrome_headless do |app|
-    browser_options = ::Selenium::WebDriver::Chrome::Options.new
-    browser_options.args << '--headless'
-    browser_options.args << '--disable-gpu'
-    browser_options.args << '--window-size=1440,1080'
-    Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
-  end
-  Capybara.javascript_driver = (ENV['CAPYBARA_DRIVER'] || :selenium_chrome_headless).to_sym
-  Capybara.default_max_wait_time = 5
 end
