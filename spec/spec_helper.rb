@@ -13,7 +13,7 @@ require 'solidus_support/extension/feature_helper'
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 
 # Requires factories defined in lib/spree_sale_prices/factories.rb
-require 'solidus_sale_prices/factories'
+load "#{File.dirname(__FILE__)}/../lib/solidus_sale_prices/factories.rb"
 
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
