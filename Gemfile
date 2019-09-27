@@ -9,6 +9,6 @@ gem 'mysql2'
 # In order to allow testing on older version of Solidus that still
 # use the gem factory_girl we need to bundle an older version of
 # factory_bot:
-gem 'factory_bot', github: 'thoughtbot/factory_bot', ref: 'f1f77'
+gem 'factory_bot'
 
 gemspec
