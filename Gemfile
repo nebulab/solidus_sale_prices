@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 branch = ENV.fetch('SOLIDUS_BRANCH', 'master')
 gem "solidus", github: "solidusio/solidus", branch: branch
 
-gem 'pg', '~> 0.21'
+gem 'pg', '~> 1.1'
 gem 'mysql2'
 
 # In order to allow testing on older version of Solidus that still
