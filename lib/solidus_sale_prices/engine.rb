@@ -10,9 +10,11 @@ module SolidusSalePrices
     end
 
     def self.activate
-      Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator*.rb")) do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
+      Dir.glob(File.join(__dir__, '..', '..', 'app', 'prependers', '**', '*.rb')) do |c|
+        require(c)
       end
+
+      Prependers.load_paths(*Dir.glob(File.expand_path(File.join('..', '..', 'app', 'prependers', '*'), __dir__)), namespace: SolidusSalePrices)
     end
 
     config.to_prepare &method(:activate).to_proc
