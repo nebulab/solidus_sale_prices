@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "solidus_core", solidus_version
   s.add_dependency "solidus_support", '>= 0.3.1'
 
-  s.add_development_dependency 'capybara', '~> 2.4'
+  s.add_development_dependency 'capybara', '~> 3.30'
   s.add_development_dependency 'capybara-screenshot'
   s.add_development_dependency 'database_cleaner', '~> 1.4'
   s.add_development_dependency 'factory_bot', '~> 4.5'
