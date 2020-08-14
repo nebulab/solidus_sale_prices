@@ -1,7 +1,7 @@
 Spree Sale Prices
 =================
 
-[![Build Status](https://travis-ci.org/nebulab/solidus_sale_prices.svg?branch=master)](https://travis-ci.org/nebulab/solidus_sale_prices)
+[![Build Status](https://travis-ci.org/solidusio-contrib/solidus_sale_prices.svg?branch=master)](https://travis-ci.org/solidusio-contrib/solidus_sale_prices)
 
 A Solidus extension (Rails Engine) that lets you set sale prices on products, either by a fixed sale price or a
 percentage off of the original price. Sale prices have a start date, end date and enabled flag to allow you to schedule
@@ -18,7 +18,7 @@ Installing
 
 In your Gemfile add the following for the latest released version:
 
-    gem 'solidus_sale_prices', github: 'nebulab/solidus_sale_prices'
+    gem 'solidus_sale_prices', github: 'solidusio-contrib/solidus_sale_prices'
 
 Install the Gem:
 
