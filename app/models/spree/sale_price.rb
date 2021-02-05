@@ -16,7 +16,7 @@ module Spree
 
     before_save :compute_calculated_price
 
-    scope :ordered, -> { order('start_at IS NOT NULL, start_at ASC') }
+    scope :ordered, -> { order(Arel.sql('start_at IS NOT NULL, start_at ASC')) }
     scope :active, -> { where(enabled: true).where('(start_at <= ? OR start_at IS NULL) AND (end_at >= ? OR end_at IS NULL)', Time.now, Time.now) }
 
     # TODO make this work or remove it
