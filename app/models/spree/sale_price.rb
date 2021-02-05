@@ -49,11 +49,11 @@ module Spree
       end_time = nil if end_time.present? && end_time <= Time.now # if end_time is not in the future then make it nil (no end)
       attr = { end_at: end_time, enabled: true }
       attr[:start_at] = Time.now if self.start_at.present? && self.start_at > Time.now # only set start_at if it's not set in the past
-      update_attributes(attr)
+      update(attr)
     end
 
     def stop
-      update_attributes({ end_at: Time.now, enabled: false })
+      update({ end_at: Time.now, enabled: false })
     end
 
     # Convenience method for displaying the price of a given sale_price in the table
