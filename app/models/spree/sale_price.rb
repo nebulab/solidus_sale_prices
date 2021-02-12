@@ -1,6 +1,6 @@
 module Spree
   class SalePrice < ActiveRecord::Base
-    acts_as_paranoid
+    include Spree::SoftDeletable
 
     belongs_to :price, class_name: "Spree::Price", touch: true
     belongs_to :price_with_deleted, -> { with_deleted }, class_name: "Spree::Price", foreign_key: :price_id
