@@ -97,7 +97,7 @@ RSpec.feature 'Admin sale prices' do
 
     within('[data-hook="sale_prices"]') do
       expect(page).to have_selector('[data-hook="prices_row"]', count: 1)
-      find('.delete-resource').click
+      accept_alert { find('.delete-resource').click }
       expect(page).to have_selector('[data-hook="prices_row"]', count: 0)
     end
   end
