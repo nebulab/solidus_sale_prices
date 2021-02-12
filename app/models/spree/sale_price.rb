@@ -3,7 +3,7 @@ module Spree
     include Spree::SoftDeletable
 
     belongs_to :price, class_name: "Spree::Price", touch: true
-    belongs_to :price_with_deleted, -> { with_deleted }, class_name: "Spree::Price", foreign_key: :price_id
+    belongs_to :price_with_deleted, -> { with_discarded }, class_name: "Spree::Price", foreign_key: :price_id
 
     delegate :currency, :currency=, to: :price, allow_nil: true
 

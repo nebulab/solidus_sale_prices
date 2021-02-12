@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <% sale_prices.each do |price| %>
-          <tr id="<%= spree_dom_id price %>" data-hook="prices_row" class="<%= "deleted" if price.deleted? %>">
+          <tr id="<%= spree_dom_id price %>" data-hook="prices_row" class="<%= "deleted" if price.discarded? %>">
             <td>
               <% if price.start_at&.future? %>
                 <span class="pill pill-warning"><%=t 'spree.sale_price_scheduled' %></span>
