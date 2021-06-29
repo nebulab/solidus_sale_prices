@@ -1,6 +1,11 @@
 module Spree
   class SalePrice < ActiveRecord::Base
-    include Spree::SoftDeletable
+
+    if ::Spree.solidus_gem_version >= Gem::Version.new('2.11')
+      include Spree::SoftDeletable
+    else
+      include SolidusSalePrices::SoftDelete
+    end
 
     belongs_to :price, class_name: "Spree::Price", touch: true
     belongs_to :price_with_deleted, -> { with_discarded }, class_name: "Spree::Price", foreign_key: :price_id

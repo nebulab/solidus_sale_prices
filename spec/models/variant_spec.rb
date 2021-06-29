@@ -149,7 +149,7 @@ describe Spree::Variant do
     end
 
     it 'destroys all sale prices when it is destroyed' do
-      expect { @variant.discard }
+      expect { variant.discard }
         .to change { Spree::SalePrice.all.size }
         .from(3).to(0)
     end
