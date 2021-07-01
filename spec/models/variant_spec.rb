@@ -29,7 +29,7 @@ describe Spree::Variant do
     variant.prices.each do |p|
       variant.put_on_sale 10.95, { currencies: [ p.currency ] }
 
-      expect(variant.price_in(p.currency).price).to eq BigDecimal(10.95, 4)
+      expect(SolidusSalePrices::PriceMethod.price_for_options(variant, p.currency).price).to eq BigDecimal(10.95, 4)
       expect(variant.original_price_in(p.currency).price).to eql BigDecimal(19.99, 4)
     end
   end
@@ -45,7 +45,7 @@ describe Spree::Variant do
     })
 
     some_prices.each do |p|
-      expect(variant.price_in(p.currency).price).to be_within(0.01).of(10.95)
+      expect(SolidusSalePrices::PriceMethod.price_for_options(variant, p.currency).price).to be_within(0.01).of(10.95)
       expect(variant.original_price_in(p.currency).price).to eql BigDecimal(19.99, 4)
     end
   end
