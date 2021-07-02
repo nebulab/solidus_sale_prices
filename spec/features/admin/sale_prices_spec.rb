@@ -78,14 +78,12 @@ RSpec.feature 'Admin sale prices' do
       find('.flatpickr-minute').set(32)
 
       fill_in('sale_price_value', with: 32.33)
-
       click_button('Create')
-
       within all('[data-hook="sale_prices"] [data-hook="prices_row"]').last do
         expect(page).to have_content(variant.descriptive_name)
         expect(page).to have_content(32.33)
         expect(page).to have_content(country.name)
-        expect(page).to have_content(variant.prices.last.currency)
+        expect(page).to have_content(variant.prices.first.currency)
         expect(page).to have_content(start_at.strftime('%B %d, %Y'))
         expect(page).to have_content(end_at.strftime('%B %d, %Y'))
       end
