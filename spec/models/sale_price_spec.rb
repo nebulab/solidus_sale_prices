@@ -39,7 +39,7 @@ describe Spree::SalePrice do
     end
 
     it 'sets the end time' do
-      expect(sale_price.end_at).to be_within(1.second).of(Time.now)
+      expect(sale_price.end_at).to be_within(2.second).of(Time.now)
     end
   end
 
