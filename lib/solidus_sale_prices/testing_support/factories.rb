@@ -36,6 +36,7 @@ FactoryBot.define do
     after(:create) do |variant, _evaluator|
       create(:eur_price, variant: variant)
       create(:usd_price, variant: variant)
+      variant.reload
     end
   end
 end

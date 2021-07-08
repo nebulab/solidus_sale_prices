@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <% prices.each do |price| %>
-            <tr id="<%= spree_dom_id price %>" data-hook="prices_row" class="<%= "deleted" if price.deleted? %>">
+            <tr id="<%= spree_dom_id price %>" data-hook="prices_row" class="<%= "deleted" if price.discarded? %>">
               <td><%= check_box_tag 'price_ids[]', price.id %></td>
               <td><%= price.variant.descriptive_name %></td>
               <td><%= price.display_country %></td>

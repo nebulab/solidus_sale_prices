@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
     s.metadata["source_code_uri"] = s.homepage if s.homepage
   end
 
-  s.required_ruby_version = '~> 2.4'
+  s.required_ruby_version = '~> 2.5'
 
   s.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -29,9 +29,10 @@ Gem::Specification.new do |s|
   s.executables = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  solidus_version = [">= 1.0", "< 3"]
+  solidus_version = [">= 1.0", "< 4"]
 
   s.add_dependency 'deface', '~> 1.0'
+  s.add_dependency 'discard'
   s.add_dependency 'solidus_api', solidus_version
   s.add_dependency 'solidus_backend', solidus_version
   s.add_dependency 'solidus_core', solidus_version

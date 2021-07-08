@@ -1,9 +1,14 @@
 module Spree
   class SalePrice < ActiveRecord::Base
-    acts_as_paranoid
+
+    if ::Spree.solidus_gem_version >= Gem::Version.new('2.11')
+      include Spree::SoftDeletable
+    else
+      include SolidusSalePrices::SoftDelete
+    end
 
     belongs_to :price, class_name: "Spree::Price", touch: true
-    belongs_to :price_with_deleted, -> { with_deleted }, class_name: "Spree::Price", foreign_key: :price_id
+    belongs_to :price_with_deleted, -> { with_discarded }, class_name: "Spree::Price", foreign_key: :price_id
 
     delegate :currency, :currency=, to: :price, allow_nil: true
 
@@ -16,7 +21,7 @@ module Spree
 
     before_save :compute_calculated_price
 
-    scope :ordered, -> { order('start_at IS NOT NULL, start_at ASC') }
+    scope :ordered, -> { order(Arel.sql('start_at IS NOT NULL, start_at ASC')) }
     scope :active, -> { where(enabled: true).where('(start_at <= ? OR start_at IS NULL) AND (end_at >= ? OR end_at IS NULL)', Time.now, Time.now) }
 
     # TODO make this work or remove it
@@ -49,11 +54,11 @@ module Spree
       end_time = nil if end_time.present? && end_time <= Time.now # if end_time is not in the future then make it nil (no end)
       attr = { end_at: end_time, enabled: true }
       attr[:start_at] = Time.now if self.start_at.present? && self.start_at > Time.now # only set start_at if it's not set in the past
-      update_attributes(attr)
+      update(attr)
     end
 
     def stop
-      update_attributes({ end_at: Time.now, enabled: false })
+      update({ end_at: Time.now, enabled: false })
     end
 
     # Convenience method for displaying the price of a given sale_price in the table

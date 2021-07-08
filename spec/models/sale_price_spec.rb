@@ -39,7 +39,7 @@ describe Spree::SalePrice do
     end
 
     it 'sets the end time' do
-      expect(sale_price.end_at).to be_within(1.second).of(Time.now)
+      expect(sale_price.end_at).to be_within(2.second).of(Time.now)
     end
   end
 
@@ -66,7 +66,7 @@ describe Spree::SalePrice do
       let(:price) { sale_price.price }
 
       before do
-        price.destroy
+        price.discard
         sale_price.reload
       end
 
@@ -81,18 +81,18 @@ describe Spree::SalePrice do
     context 'when the price has been soft-deleted' do
       before do
         sale = create :sale_price
-        sale.price.destroy
+        sale.price.discard
       end
 
       it 'preloads the variant via SQL also for soft-deleted records' do
-        records = Spree::SalePrice.with_deleted.includes(:variant)
+        records = Spree::SalePrice.with_discarded.includes(:variant)
         expect(records.first.variant).to be_present
       end
     end
   end
 
   context 'touching associated product when destroyed' do
-    subject { -> { sale_price.reload.destroy } }
+    subject { -> { sale_price.reload.discard } }
     let!(:product) { sale_price.product }
     let(:sale_price) { Timecop.travel(1.day.ago) { create(:sale_price) } }
 
@@ -107,7 +107,7 @@ describe Spree::SalePrice do
     end
 
     context 'when associated variant has been destroyed' do
-      before { sale_price.variant.destroy }
+      before { sale_price.variant.discard }
 
       it 'does not touch product' do
         expect(subject).not_to change { product.reload.updated_at }
@@ -115,7 +115,7 @@ describe Spree::SalePrice do
     end
 
     context 'when associated price has been destroyed' do
-      before { sale_price.price.destroy }
+      before { sale_price.price.discard }
 
       it 'does not touch product' do
         expect(subject).not_to change { product.reload.updated_at }

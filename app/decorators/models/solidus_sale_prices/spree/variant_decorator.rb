@@ -23,29 +23,29 @@ module SolidusSalePrices
       # TODO make update_sale method
 
       def active_sale_in(currency)
-        price_in(currency).active_sale
+        SolidusSalePrices::PriceMethod.price_for_options(self, currency).active_sale
       end
       alias :current_sale_in :active_sale_in
 
       def next_active_sale_in(currency)
-        price_in(currency).next_active_sale
+        SolidusSalePrices::PriceMethod.price_for_options(self, currency).next_active_sale
       end
       alias :next_current_sale_in :next_active_sale_in
 
       def sale_price_in(currency)
-        ::Spree::Price.new variant_id: self.id, currency: currency, amount: price_in(currency).sale_price
+        ::Spree::Price.new variant_id: self.id, currency: currency, amount: SolidusSalePrices::PriceMethod.price_for_options(self, currency).sale_price
       end
 
       def discount_percent_in(currency)
-        price_in(currency).discount_percent
+        SolidusSalePrices::PriceMethod.price_for_options(self, currency).discount_percent
       end
 
       def on_sale_in?(currency)
-        price_in(currency).on_sale?
+        SolidusSalePrices::PriceMethod.price_for_options(self, currency).on_sale?
       end
 
       def original_price_in(currency)
-        ::Spree::Price.new variant_id: self.id, currency: currency, amount: price_in(currency).original_price
+        ::Spree::Price.new variant_id: self.id, currency: currency, amount: SolidusSalePrices::PriceMethod.price_for_options(self, currency).original_price
       end
 
       def enable_sale(currencies = nil)

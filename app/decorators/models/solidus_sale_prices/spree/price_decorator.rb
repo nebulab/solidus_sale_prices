@@ -5,6 +5,9 @@ module SolidusSalePrices
         base.has_many :sale_prices, dependent: :destroy
         base.has_many :active_sale_prices, -> { merge(::Spree::SalePrice.active) }, class_name: '::Spree::SalePrice'
         base.after_save :update_calculated_sale_prices
+        base.after_discard do
+          sale_prices.discard_all
+        end
       end
 
       def update_calculated_sale_prices

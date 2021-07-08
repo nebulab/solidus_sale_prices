@@ -11,7 +11,7 @@ describe Spree::Price do
 
     it 'builds a new sale' do
       is_expected.to have_attributes({
-        value: BigDecimal.new(sale_price_value, 4),
+        value: BigDecimal(sale_price_value, 4),
         start_at: be_within(1.second).of(Time.now),
         end_at: nil,
         enabled: true,
@@ -32,7 +32,7 @@ describe Spree::Price do
       end
 
       it "updates the price's price" do
-        expect { put_on_sale }.to change { price.reload.price }.from(price_amount).to(BigDecimal.new(sale_price_value, 4))
+        expect { put_on_sale }.to change { price.reload.price }.from(price_amount).to(BigDecimal(sale_price_value, 4))
       end
 
       it "sets original_price" do
@@ -89,7 +89,7 @@ describe Spree::Price do
       before { price.put_on_sale 10 }
 
       it 'destroys all sale prices when it is destroyed' do
-        expect { price.destroy }
+        expect { price.discard }
           .to change { Spree::SalePrice.all.size }
           .from(1).to(0)
       end

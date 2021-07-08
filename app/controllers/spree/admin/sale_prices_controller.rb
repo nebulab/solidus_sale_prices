@@ -22,7 +22,7 @@ module Spree
 
       def destroy
         @sale_price = Spree::SalePrice.find(params[:id])
-        @sale_price.destroy
+        @sale_price.discard
         render_js_for_destroy
       end
 
